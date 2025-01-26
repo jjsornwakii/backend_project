@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Patch, Post, Query } from "@nestjs/common";
 import { CarService } from "./car.service";
 import { CreateCarDto } from "./dto/create-car.dto";
 import { Car } from "./car.entity";
-import { LinkCarVipDto } from "./dto/link-car-vip.dto";
+import { LinkCarVipDto, UnlinkCarDto } from "./dto/link-car-vip.dto";
 
 
 @Controller('cars')
@@ -40,4 +40,22 @@ export class CarController {
     async linkCarToVip(@Body() linkCarVipDto: LinkCarVipDto) {
         return await this.carService.linkCarToVip(linkCarVipDto);
     }
+
+
+    @Post('unlink-vip')
+  async unlinkVipFromCar(@Body() unlinkCarDto: UnlinkCarDto) {
+    return this.carService.unlinkVipFromCar(unlinkCarDto.licenseplate);
+  }
+
+    @Post('updatelp')
+        async updateLicensePlate(@Body() updateData: { old_lp: string, new_lp: string }) {
+    return this.carService.updateLicensePlate(updateData);
+}
+
+
+
+
+
+
+
 }
