@@ -1,5 +1,6 @@
 import { Car } from 'src/car/car.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Payment } from 'src/payment/payment.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 
 @Entity('entryexitrecord')
 export class EntryExitRecord {
@@ -24,4 +25,7 @@ export class EntryExitRecord {
   @ManyToOne(() => Car, { onDelete: 'NO ACTION' }) // หรือเปลี่ยนเป็น CASCADE ถ้าต้องการลบ record เมื่อลบรถ
   @JoinColumn({ name: 'car_id', referencedColumnName: 'car_id' }) // เชื่อมกับ car_id ใน table car
   car: Car;
+
+  @OneToMany(() => Payment, payment => payment.entryExitRecord)
+    payments: Payment[];
 }

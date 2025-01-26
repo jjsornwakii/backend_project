@@ -209,4 +209,100 @@ async linkCarToVip(linkCarVipDto: LinkCarVipDto): Promise<any> {
       );
     }
 }
+
+
+// ฟังก์ชันที่ใช้ลบการลิงก์ VIP กับรถ
+async unlinkVipFromCar(licenseplate: string): Promise<any> {
+  try {
+    // ค้นหารถคันนั้นตามเลขทะเบียน
+    const car = await this.carRepository.findOne({ where: { licenseplate }, relations: ['vipMember'] });
+
+    if (!car) {
+      throw new HttpException(
+        { status: 'error', message: 'Car not found' },
+        HttpStatus.NOT_FOUND
+      );
+    }
+
+    // ตรวจสอบว่ารถคันนั้นมีการเชื่อมโยงกับ VIP หรือไม่
+    if (car.vipMember) {
+      // หากมีการเชื่อมโยงกับ VIP, ลบการเชื่อมโยง
+      car.vip_member_id = null;  // ยกเลิกการเชื่อมโยงกับ VIP
+      car.vipMember = null;      // ตั้งค่า vipMember เป็น null
+
+      // บันทึกการเปลี่ยนแปลง
+      await this.carRepository.save(car);
+
+      return {
+        status: 'success',
+        message: 'Successfully unlinked VIP from car',
+      };
+    } else {
+      // ถ้าไม่มีการเชื่อมโยงกับ VIP
+      return {
+        status: 'info',
+        message: 'Car is not linked to any VIP member',
+      };
+    }
+  } catch (error) {
+    throw new HttpException(
+      { status: 'error', message: error.message },
+      HttpStatus.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
+
+async updateLicensePlate(updateData: { old_lp: string, new_lp: string }): Promise<any> {
+  try {
+      // Find the car with the old license plate
+      const car = await this.carRepository.findOne({
+          where: { licenseplate: updateData.old_lp }
+      });
+
+      // Check if car exists
+      if (!car) {
+          throw new HttpException(
+              { 
+                  status: 'error', 
+                  message: 'Car with this license plate not found' 
+              },
+              HttpStatus.NOT_FOUND
+          );
+      }
+
+      // Check if new license plate is already in use
+      const existingCar = await this.carRepository.findOne({
+          where: { licenseplate: updateData.new_lp }
+      });
+
+      if (existingCar) {
+          throw new HttpException(
+              { 
+                  status: 'error', 
+                  message: 'New license plate already exists' 
+              },
+              HttpStatus.BAD_REQUEST
+          );
+      }
+
+      // Update license plate
+      car.licenseplate = updateData.new_lp;
+      const updatedCar = await this.carRepository.save(car);
+
+      return {
+          status: 'success',
+          message: 'License plate updated successfully',
+          data: updatedCar
+      };
+  } catch (error) {
+      throw new HttpException(
+          { 
+              status: 'error', 
+              message: error.message 
+          },
+          HttpStatus.INTERNAL_SERVER_ERROR
+      );
+  }
+}
 }

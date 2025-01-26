@@ -27,6 +27,9 @@ export class VipMember {
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
 
+  @Column({ type: 'timestamp' })
+  expire_date: Date;
+
 
   // เพิ่มความสัมพันธ์แบบ One-to-Many
   @OneToMany(() => Car, (car) => car.vipMember)
