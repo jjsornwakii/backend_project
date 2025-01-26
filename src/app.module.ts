@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { CarModule } from './car/car.module';
 import { VipModule } from './vipmember/vip.module';
 import { EntryExitModule } from './entry-exit/entry-exit.module';
+import { ManageModule } from './manage/manage.mdule';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { EntryExitModule } from './entry-exit/entry-exit.module';
       synchronize: true, // ให้ TypeORM ซิงค์ฐานข้อมูลกับ Entity อัตโนมัติ (ใช้ใน development เท่านั้น)
   }),  
   
-  AdminModule,AuthModule,CarModule,VipModule,EntryExitModule],
+  AdminModule,AuthModule,CarModule,VipModule,EntryExitModule,ManageModule],
 
 
   controllers: [AppController],
