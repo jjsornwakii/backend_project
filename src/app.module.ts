@@ -10,21 +10,31 @@ import { CarModule } from './car/car.module';
 import { VipModule } from './vipmember/vip.module';
 import { EntryExitModule } from './entry-exit/entry-exit.module';
 import { ManageModule } from './manage/manage.mdule';
+import { ConfigModule } from '@nestjs/config';
+import { ParkingDiscountModule } from './manage/parking-discounts/parking-discounts.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      type: 'postgres', // ระบุประเภทฐานข้อมูลเป็น PostgreSQL
-      host: 'localhost', // ที่อยู่ของฐานข้อมูล
-      port: 5433, // พอร์ตที่ใช้ในการเชื่อมต่อ (ค่าปกติของ PostgreSQL คือ 5432)
-      username: 'postgres', // ชื่อผู้ใช้ PostgreSQL
-      password: 'zxcv1234gg#', // รหัสผ่าน PostgreSQL
-      database: 'CarFee', // ชื่อฐานข้อมูลที่ใช้
-      entities: [__dirname + '/**/*.entity{.ts,.js}'], // กำหนดตำแหน่งของ Entity ที่ใช้
-      synchronize: true, // ให้ TypeORM ซิงค์ฐานข้อมูลกับ Entity อัตโนมัติ (ใช้ใน development เท่านั้น)
-  }),  
+      type: 'postgres',
+      host: process.env.DB_HOST,  
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
+    }),  
   
-  AdminModule,AuthModule,CarModule,VipModule,EntryExitModule,ManageModule],
+  AdminModule,
+  AuthModule,
+  CarModule,
+  VipModule,
+  EntryExitModule,
+  ManageModule,
+  ParkingDiscountModule
+],
 
 
   controllers: [AppController],
