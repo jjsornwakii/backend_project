@@ -12,6 +12,7 @@ import { EntryExitModule } from './entry-exit/entry-exit.module';
 import { ManageModule } from './manage/manage.mdule';
 import { ConfigModule } from '@nestjs/config';
 import { ParkingDiscountModule } from './manage/parking-discounts/parking-discounts.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -33,7 +34,8 @@ import { ParkingDiscountModule } from './manage/parking-discounts/parking-discou
   VipModule,
   EntryExitModule,
   ManageModule,
-  ParkingDiscountModule
+  ParkingDiscountModule,
+  PaymentModule,
 ],
 
 
