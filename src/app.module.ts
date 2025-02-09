@@ -13,6 +13,7 @@ import { ManageModule } from './manage/manage.mdule';
 import { ConfigModule } from '@nestjs/config';
 import { ParkingDiscountModule } from './manage/parking-discounts/parking-discounts.module';
 import { PaymentModule } from './payment/payment.module';
+import { CheckInModule } from './check-in/check-in.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { PaymentModule } from './payment/payment.module';
   ManageModule,
   ParkingDiscountModule,
   PaymentModule,
+  CheckInModule,
 ],
 
 
